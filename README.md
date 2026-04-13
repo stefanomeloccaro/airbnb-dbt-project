@@ -115,3 +115,7 @@ The main goal was to get comfortable with:
 
 * add business-level marts (KPIs, aggregations)
 * build a simple dashboard on top of the data
+
+## Project lineage
+
+![dbt DAG](images/dbt_dag.png)
