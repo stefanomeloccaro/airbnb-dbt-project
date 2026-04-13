@@ -68,11 +68,11 @@ The focus was not just building tables, but covering the main parts of a dbt pro
 
 ## Notes on design choices
 
-This project was built with the goal of demonstrating familiarity with dbt features, rather than applying every feature everywhere.
+This project was built to demonstrate how key dbt features work in practice within a limited scope.
 
-Some functionalities (like custom tests, macros, or specific configurations) are intentionally implemented only once or in a limited scope. The idea was to show how and when to use them, without over-engineering the project.
+In some cases, patterns such as relationship tests or custom checks are applied only to a subset of models or columns. The goal was to show the implementation approach clearly, rather than replicate every pattern across the entire project.
 
-In a real production setup, some of these patterns would likely be applied more consistently.
+In a production setting, these checks and configurations would be applied more consistently across all relevant models and fields.
 
 ---
 
