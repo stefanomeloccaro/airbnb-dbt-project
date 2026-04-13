@@ -44,15 +44,25 @@ All analytical logic lives in the marts layer.
 
 ## What I worked on
 
-The focus was not just building tables, but covering the full dbt workflow:
+The focus was not just building tables, but covering the main parts of a dbt project end to end:
 
-* cleaning messy numeric values (e.g. `"1,5"` → `1.5`)
-* writing reusable macros
-* adding built-in tests (`not_null`, `unique`, `relationships`)
-* creating custom tests (e.g. orphan record checks)
-* adding unit tests with mock data
-* using snapshots for historical tracking
-* implementing an incremental model on the fact table
+* **Data cleaning** – handling messy numeric values, type casting, nulls, and inconsistent formats in staging
+* **YAML configuration** – organizing schema files correctly across staging and marts for tests, descriptions, and model settings
+* **Sources and refs** – using `source()` for raw data and `ref()` to build dependencies and lineage across models
+* **Macros** – writing reusable logic to avoid repeating the same SQL patterns
+* **Advanced macros** – adding more flexible logic for repeated transformations and conditional handling
+* **Built-in tests** – using `not_null`, `unique`, `relationships`, and `accepted_values`
+* **Singular tests** – writing standalone SQL checks that must return zero rows
+* **Custom generic tests** – creating reusable tests, including tests with parameters
+* **Severity settings** – using warnings selectively when the dataset quality should not block the pipeline
+* **Store failures** – saving failing test rows for debugging and audit purposes
+* **Unit tests** – validating transformations with mock input and expected output
+* **Snapshots** – tracking historical changes without relying on an unreliable `updated_at` column
+* **Data contracts** – enforcing schema definitions on selected marts models
+* **Incremental models** – applying incremental logic to improve performance on the fact table
+* **Materializations** – using the appropriate materialization depending on the model purpose (`view`, `table`, `incremental`, and `snapshot`)
+* **Third-party packages** – using `dbt_utils`, including helpers like surrogate key generation
+
 
 ---
 
