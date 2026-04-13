@@ -1,0 +1,35 @@
+{{ config(materialized='table', schema='L2_MARTS') }}
+
+select
+    listing_id,
+    host_id,
+    listing_name,
+    description,
+    property_type,
+    room_type,
+    neighbourhood,
+    neighbourhood_group,
+    latitude,
+    longitude,
+    accommodates,
+    bedrooms,
+    beds,
+    bathrooms,
+    amenities,
+    has_availability,
+    minimum_nights,
+    maximum_nights,
+    availability_30,
+    availability_60,
+    availability_90,
+    availability_365,
+    number_of_reviews,
+    number_of_reviews_ltm,
+    number_of_reviews_l30d,
+    availability_eoy,
+    review_scores_rating,
+    review_scores_cleanliness,
+    review_scores_location,
+    review_scores_value
+from {{ ref('stg_listings') }}
+where listing_id is not null

@@ -1,0 +1,10 @@
+snapshots:
+  - name: scd_stg_listings
+    description: "SCD Type 2 snapshot to track changes in listing attributes over time"
+    relation: ref('stg_listings')
+    config:
+      schema: SNAPSHOTS
+      unique_key: listing_id
+      strategy: check
+      check_cols: 'all'
+      hard_deletes: invalidate

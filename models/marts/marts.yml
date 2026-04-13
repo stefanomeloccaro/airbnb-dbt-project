@@ -1,0 +1,217 @@
+version: 2
+
+models:
+
+  - name: dim_hosts
+    description: "Host dimension: one row per host."
+    columns:
+      - name: host_id
+        description: "Primary key for the host."
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_neighbourhoods
+    description: "Neighbourhood dimension: one row per neighbourhood_group and neighbourhood."
+    columns:
+      - name: neighbourhood_id
+        description: "Surrogate key for the neighbourhood."
+        tests:
+          - unique
+          - not_null
+
+      - name: neighbourhood_group
+        description: "High-level geographical grouping."
+        tests:
+          - not_null
+
+      - name: neighbourhood
+        description: "Neighbourhood name."
+        tests:
+          - not_null
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - neighbourhood_group
+              - neighbourhood
+
+  - name: dim_listings
+    description: "Listing dimension: one row per listing."
+    columns:
+      - name: listing_id
+        description: "Primary key for the listing."
+        tests:
+          - not_null
+          - unique
+
+      - name: room_type
+        data_tests:
+        - accepted_values:
+            arguments:
+              values: ['Entire home/apt', 'Private room', 'Shared room', 'Hotel room']
+
+  - name: fct_reviews
+    description: "Reviews fact table: one row per review."
+    columns:
+      - name: review_id
+        description: "Primary key for the review."
+        tests:
+          - not_null
+          - unique
+
+      - name: listing_id
+        description: "Foreign key to dim_listings."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_listings')
+                field: listing_id
+          - no_orphan_records:  #Custom generic
+              ref_model: AIRBNB_DBT.L2_MARTS.DIM_LISTINGS
+              ref_column: listing_id
+
+      - name: host_id
+        description: "Foreign key to dim_hosts."
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hosts')
+                field: host_id
+          - no_orphan_records:  #Custom generic
+              ref_model: AIRBNB_DBT.L2_MARTS.DIM_HOSTS
+              ref_column: host_id
+
+      - name: neighbourhood_id
+        description: "Foreign key to dim_neighbourhoods."
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_neighbourhoods')
+                field: neighbourhood_id
+          - no_orphan_records:  #Custom generic
+              ref_model: AIRBNB_DBT.L2_MARTS.dim_neighbourhoods
+              ref_column: neighbourhood_id
+
+models:
+  - name: dim_hosts #Data contracts
+    config:
+      contract:
+        enforced: true
+    columns:
+    - name: host_id
+      data_type: number
+    - name: host_name
+      data_type: varchar
+    - name: host_location
+      data_type: varchar
+    - name: host_is_superhost
+      data_type: boolean
+    - name: host_has_profile_pic
+      data_type: boolean
+    - name: host_identity_verified
+      data_type: boolean
+    - name: host_listings_count
+      data_type: number
+    - name: host_type
+      data_type: varchar
+
+  - name: dim_listings
+    config:
+      contract:
+        enforced: true
+    columns:
+    - name: listing_id
+      data_type: number
+    - name: host_id
+      data_type: number
+    - name: listing_name
+      data_type: varchar
+    - name: description
+      data_type: varchar
+    - name: property_type
+      data_type: varchar
+    - name: room_type
+      data_type: varchar
+    - name: neighbourhood
+      data_type: varchar
+    - name: neighbourhood_group
+      data_type: varchar
+    - name: latitude
+      data_type: float
+    - name: longitude
+      data_type: float
+    - name: accommodates
+      data_type: number
+    - name: bedrooms
+      data_type: number
+    - name: beds
+      data_type: number
+    - name: bathrooms
+      data_type: float
+    - name: amenities
+      data_type: varchar
+    - name: has_availability
+      data_type: boolean
+    - name: minimum_nights
+      data_type: number
+    - name: maximum_nights
+      data_type: number
+    - name: availability_30
+      data_type: number
+    - name: availability_60
+      data_type: number
+    - name: availability_90
+      data_type: number
+    - name: availability_365
+      data_type: number
+    - name: number_of_reviews
+      data_type: number
+    - name: number_of_reviews_ltm
+      data_type: number
+    - name: number_of_reviews_l30d
+      data_type: number
+    - name: availability_eoy
+      data_type: number
+    - name: review_scores_rating
+      data_type: float
+    - name: review_scores_cleanliness
+      data_type: float
+    - name: review_scores_location
+      data_type: float
+    - name: review_scores_value
+      data_type: float
+
+  - name: fct_reviews
+    config:
+      contract:
+        enforced: true
+    columns: 
+    - name: review_id
+      data_type: number
+    - name: listing_id
+      data_type: number
+    - name: host_id
+      data_type: number
+    - name: neighbourhood_id
+      data_type: varchar
+    - name: review_date
+      data_type: date
+    - name: reviewer_name
+      data_type: varchar 
+    - name: review_text
+      data_type: varchar
+    
+  - name: dim_neighbourhoods
+    config:
+      contract:
+        enforced: true
+    columns: 
+    - name: neighbourhood_id
+      data_type: varchar
+    - name: neighbourhood_group
+      data_type: varchar
+    - name: neighbourhood
+      data_type: varchar

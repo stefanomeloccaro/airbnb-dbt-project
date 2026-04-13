@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: airbnb_raw
+    description: "Raw Airbnb data loaded into the L0_RAW schema in Snowflake."
+    database: AIRBNB_DBT
+    schema: L0_RAW
+    tables:
+      - name: raw_listings
+        identifier: raw_listings
+
+      - name: raw_neighbourhoods
+        identifier: raw_neighbourhoods
+
+      - name: raw_reviews
+        identifier: raw_reviews
+
+      - name: raw_hosts
+        identifier: raw_hosts

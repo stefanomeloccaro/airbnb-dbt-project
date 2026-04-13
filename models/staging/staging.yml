@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: stg_hosts
+    description: Cleaned Airbnb hosts
+    columns:
+      - name: host_id
+        tests:
+          - not_null
+          - unique
+  
+  - name: stg_listings
+    description: Cleaned Airbnb listings data
+    columns:
+      - name: listing_id
+        description: Primary key of the listing
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_reviews
+    description: Cleaned Airbnb reviews
+    columns:
+      - name: review_id
+        tests:
+          - not_null
+          - unique
+  
+  - name: stg_neighbourhoods
+    description: Cleaned Airbnb neighbourhood
+    columns:
+      - name: neighbourhood_id
+        tests:
+          - not_null
+          - unique
+
+      - name: neighbourhood
+        tests:
+          - not_null
+
+      - name: neighbourhood_group
+        tests:
+          - not_null
+  

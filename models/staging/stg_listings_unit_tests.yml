@@ -1,0 +1,28 @@
+version: 2
+
+#Unit test
+unit_tests:
+  - name: test_stg_listings_casts_numeric_strings
+    model: stg_listings
+    given:
+      - input: source('airbnb_raw', 'raw_listings')
+        format: dict
+        rows:
+          - {
+              id: 2595,
+              host_id: 100,
+              bathrooms: '1,5',
+              latitude: '40,76568',
+              longitude: '-73,97043',
+              accommodates: '4'
+            }
+    expect:
+      rows:
+        - {
+            listing_id: 2595,
+            host_id: 100,
+            bathrooms: 1.5,
+            latitude: 40.76568,
+            longitude: -73.97043,
+            accommodates: 4
+          }

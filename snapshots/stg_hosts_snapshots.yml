@@ -1,0 +1,10 @@
+snapshots:
+  - name: scd_stg_hosts
+    description: "SCD Type 2 snapshot to track changes in host attributes over time"
+    relation: ref('stg_hosts')
+    config:
+      schema: SNAPSHOTS
+      unique_key: host_id
+      strategy: check
+      check_cols: 'all'
+      hard_deletes: invalidate
